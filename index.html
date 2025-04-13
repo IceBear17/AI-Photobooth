@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhotoBooth AI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Welcome Screen -->
+  <div id="screen-welcome" class="screen">
+    <h1>📸 Welcome to AI Photobooth</h1>
+    <button id="startBtn" class="start-button">Tap to Start</button>
+  </div>
+
+  <!-- Template Selection Screen -->
+<div id="screen-template-selection" class="screen hidden">
+  <h2>Select a Template</h2>
+  <div id="templateList" class="template-list"></div>
+  <div class="nav-buttons">
+    <button id="backToWelcome" class="nav-button">⬅ Back</button>
+    <button id="nextToPhoto" class="nav-button" disabled>Next ➡</button>
+  </div>
+</div>
+
+<!-- Capture Screen -->
+<div id="screen-capture" class="screen hidden">
+  <h2>Take or Upload a Photo</h2>
+  <div class="camera-wrapper">
+    <video id="webcam" autoplay playsinline muted></video>
+    <canvas id="canvas" class="hidden"></canvas>
+  </div>
+
+  <div class="capture-buttons">
+    <button id="captureBtn">📸 Capture</button>
+    <input type="file" accept="image/*" id="uploadInput" hidden />
+    <button id="uploadBtn">📁 Upload</button>
+  </div>
+
+  <div class="nav-buttons">
+    <button id="backToTemplates">⬅️ Back</button>
+    <button id="nextToGenerating" disabled>Next ➡️</button>
+  </div>
+</div>
+
+<!-- Generating Screen -->
+<div id="screen-generating" class="screen hidden">
+  <h2>Generating Your AI Photo...</h2>
+  <div class="spinner"></div>
+  <p>Please wait a few seconds.</p>
+</div>
+
+<!-- Result Screen -->
+<div id="screen-result" class="screen hidden">
+  <h2>🎉 Your Photo is Ready!</h2>
+  <img id="resultImage" alt="Generated Result" />
+  <div class="button-group">
+    <button id="downloadBtn">Download</button>
+    <button id="tryAgainBtn">Try Again</button>
+    <button id="newPhotoBtn">New Photo</button>
+  </div>
+</div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
