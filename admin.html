@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🛠️ Admin Panel</h1>
+
+    <section>
+      <h2>Upload Template</h2>
+      <form id="upload-template-form">
+        <input type="file" id="templateUpload" />
+        <button onclick="uploadTemplate()">Upload</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Delete Template</h2>
+      <form id="delete-template-form">
+        <select id="templateList"></select>
+        <button onclick="deleteTemplate()">Delete</button>
+      </form>
+    </section>
+
+    <section>
+        <h2>Change Background</h2>
+        <form id="upload-bg-form">
+          <select name="screen" required>
+            <option value="welcome">Welcome Screen</option>
+            <option value="template">Template Screen</option>
+            <option value="capture">Capture Screen</option>
+            <option value="generating">Generating Screen</option>
+            <option value="result">Result Screen</option>
+          </select>
+          <input type="file" name="file" accept="image/*" required />
+          <button type="submit">Set Background</button>
+        </form>
+      </section>
+
+    <p class="status" id="status"></p>
+    <script src="admin.js"></script>
+  </div>
+
+  <script>
+
+async function fetchTemplates() {
+      const res = await fetch('/templates/');
+      const templates = await res.json();
+      const list = document.getElementById('templateList');
+      list.innerHTML = "";
+      templates.forEach(t => {
+        const option = document.createElement('option');
+        option.value = t;
+        option.textContent = t;
+        list.appendChild(option);
+      });
+    }
+
+async function uploadTemplate() {
+    const file = document.getElementById('templateUpload').files[0];
+    if (!file) return alert("Please select a file.");
+    const formData = new FormData();
+    formData.append("template", file);
+    await fetch("/admin/templates/upload", {
+      method: "POST",
+      body: formData
+    });
+    alert("Template uploaded!");
+    fetchTemplates();
+  }
+
+  async function deleteTemplate() {
+    const filename = document.getElementById('templateList').value;
+    if (!filename) return;
+    const confirmDelete = confirm(`Delete template "${filename}"?`);
+    if (!confirmDelete) return;
+
+    await fetch(`/admin/templates/${filename}`, {
+      method: "DELETE"
+    });
+    alert("Template deleted!");
+    fetchTemplates();
+  }
+
+//   async function loadBackgroundPreview() {
+//       const res = await fetch("/admin/background");
+//       if (res.ok) {
+//         const img = document.getElementById("bgPreview");
+//         img.src = URL.createObjectURL(await res.blob());
+//       }
+//     }
+
+    fetchTemplates();
+    loadBackgroundPreview();
+
+  </script>
+</body>
+</html>
+  

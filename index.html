@@ -34,6 +34,7 @@
 
   <div class="capture-buttons">
     <button id="captureBtn">📸 Capture</button>
+    <button id="retakeBtn" class="hidden">🔁Retake Photo</button>
     <input type="file" accept="image/*" id="uploadInput" hidden />
     <button id="uploadBtn">📁 Upload</button>
   </div>
@@ -48,6 +49,7 @@
 <div id="screen-generating" class="screen hidden">
   <h2>Generating Your AI Photo...</h2>
   <div class="spinner"></div>
+  <div class="loader"></div>
   <p>Please wait a few seconds.</p>
 </div>
 
@@ -61,6 +63,41 @@
     <button id="newPhotoBtn">New Photo</button>
   </div>
 </div>
+
+<!-- Lock Icon -->
+<div id="lockBtn" style="
+position: fixed;
+top: 20px;
+right: 20px;
+z-index: 1000;
+background: white;
+border-radius: 50%;
+width: 60px;
+height: 60px;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+cursor: pointer;
+">
+<img id="lockIcon" src="./icons/lock.svg" alt="Lock" style="width: 24px; height: 24px;" />
+</div>
+
+<script>
+  window.addEventListener("DOMContentLoaded", async () => {
+    const response = await fetch("backgrounds/backgrounds.json");
+    const bgMap = await response.json();
+  
+    for (const [screenName, fileName] of Object.entries(bgMap)) {
+      const screen = document.getElementById(`screen-${screenName}`);
+      if (screen) {
+        screen.style.backgroundImage = `url('./backgrounds/${fileName}')`;
+        screen.style.backgroundSize = "cover";
+        screen.style.backgroundPosition = "center";
+      }
+    }
+  });
+  </script>
 
   <script src="config.js"></script>
   <script src="app.js"></script>
